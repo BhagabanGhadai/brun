@@ -1,5 +1,5 @@
 import winston from 'winston';
-
+import env from '../env.js'
 // Configure Winston to log errors to a file
 export const errorLogger = winston.createLogger({
   level: 'error',
