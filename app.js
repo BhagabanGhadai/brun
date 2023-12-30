@@ -6,7 +6,7 @@ import { rateLimit } from 'express-rate-limit';
 import env from './env.js'
 // import { errorHandler } from './middlewares/error.middleware.js';
 import { ApiError } from './utils/ApiError.js';
-// import globalRouter from "./routes/healthcheck.routes.js";
+import globalRouter from "./apps/api/index.js";
 
 export const start = (app) => {
     app.use(helmet())
@@ -22,7 +22,7 @@ export const start = (app) => {
         legacyHeaders: false,
     })
     app.use(limiter)
-    // app.use(globalRouter);
+    app.use(globalRouter);
     app.use((req,res,next)=>{
         throw new ApiError(404,"Api not found")
     })
