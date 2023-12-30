@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import env from './env.js'
-// import { errorHandler } from './middlewares/error.middleware.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 import { ApiError } from './utils/ApiError.js';
 import globalRouter from "./apps/api/index.js";
 
@@ -30,5 +30,5 @@ export const start = (app) => {
         req.setTimeout(5000)
         res.setTimeout(5000)
     })
-    // app.use(errorHandler)
+    app.use(errorHandler)
 }
