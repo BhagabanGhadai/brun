@@ -6,7 +6,7 @@ export const errorHandler = (err, req, res, next) => {
   let error = err;
   //Handel Error As Api Error
   if (!(error instanceof ApiError)) {
-    const statusCode =error.statusCode || error instanceof mongoose.Error ? 400 : 500;
+    const statusCode =error.statusCode || 500;
     const message = error.message || "Something went wrong";
     error = new ApiError(statusCode, message, error?.errors || [], err.stack);
   }
