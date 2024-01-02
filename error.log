@@ -17,3 +17,17 @@
 {"data":null,"errors":[],"level":"error","message":"no address addedd","statusCode":400,"success":false,"timestamp":"2024-01-02T14:09:40.384Z"}
 {"data":null,"errors":[],"level":"error","message":"no address addedd","statusCode":400,"success":false,"timestamp":"2024-01-02T14:09:52.551Z"}
 {"data":null,"errors":[],"level":"error","message":"Api not found","statusCode":404,"success":false,"timestamp":"2024-01-02T14:10:04.098Z"}
+{"data":null,"errors":[],"level":"error","message":"Api not found","statusCode":404,"success":false,"timestamp":"2024-01-02T15:18:15.062Z"}
+{"data":null,"errors":[],"level":"error","message":"Api not found","statusCode":404,"success":false,"timestamp":"2024-01-02T15:18:19.333Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'create')","statusCode":500,"success":false,"timestamp":"2024-01-02T15:18:26.195Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'create')","statusCode":500,"success":false,"timestamp":"2024-01-02T15:19:45.088Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'create')","statusCode":500,"success":false,"timestamp":"2024-01-02T15:20:38.916Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'create')","statusCode":500,"success":false,"timestamp":"2024-01-02T15:22:28.112Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'create')","statusCode":500,"success":false,"timestamp":"2024-01-02T15:22:40.931Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'create')","statusCode":500,"success":false,"timestamp":"2024-01-02T15:22:58.688Z"}
+{"data":null,"errors":[],"level":"error","message":"\nInvalid `prisma.productCategory.create()` invocation:\n\n\nUnique constraint failed on the fields: (`categoryName`)","statusCode":500,"success":false,"timestamp":"2024-01-02T15:23:23.947Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'findMany')","statusCode":500,"success":false,"timestamp":"2024-01-02T15:24:25.062Z"}
+{"data":null,"errors":[],"level":"error","message":"no category found","statusCode":404,"success":false,"timestamp":"2024-01-02T15:25:15.676Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot access 'updateCategory' before initialization","statusCode":500,"success":false,"timestamp":"2024-01-02T15:26:43.172Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot access 'updateCategory' before initialization","statusCode":500,"success":false,"timestamp":"2024-01-02T15:27:54.030Z"}
+{"data":null,"errors":[],"level":"error","message":"\nInvalid `prisma.productCategory.update()` invocation:\n\n{\n  where: {\n    id: \"58cd46ce-3435-49b8-a9b8-9adaf0197a1a\"\n  },\n+ data: ProductCategoryUpdateInput | ProductCategoryUncheckedUpdateInput\n}\n\nArgument `data` is missing.","statusCode":500,"success":false,"timestamp":"2024-01-02T15:31:42.855Z"}

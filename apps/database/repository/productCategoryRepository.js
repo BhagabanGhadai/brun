@@ -1,7 +1,7 @@
 import prisma from '../db.conntection.js';
 
 export const createCategory = async (categoryName) => {
-    return await prisma.productcategory.create({
+    return await prisma.ProductCategory.create({
         data: {
             categoryName: categoryName
         }
@@ -9,19 +9,19 @@ export const createCategory = async (categoryName) => {
 };
 
 export const fetchAllCategories = async () => {
-    return await prisma.productcategory.findMany();
+    return await prisma.ProductCategory.findMany();
 };
 
-export const fetchCategory = async (categoryName) => {
-    return await prisma.productcategory.findUnique({
+export const fetchCategory = async (categoryId) => {
+    return await prisma.ProductCategory.findUnique({
         where: {
-            categoryName: categoryName
+            id: categoryId
         }
     });
 };
 
 export const updateCategory = async (categoryId, categoryName) => {
-     await prisma.productcategory.update({
+     await prisma.ProductCategory.update({
         where: {
             id: categoryId
         },
@@ -31,8 +31,8 @@ export const updateCategory = async (categoryId, categoryName) => {
     });
 };
 
-export const deleteCategory = async (categoryId, categoryName) => {
-    await prisma.productcategory.update({
+export const deleteCategory = async (categoryId) => {
+    await prisma.ProductCategory.delete({
        where: {
            id: categoryId
        }
