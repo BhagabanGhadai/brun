@@ -2,10 +2,52 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @unique @default(uuid())
+  first_name String
+  last_name  String
+  email      String   @unique
+  password   String
+  role       Role     @default(user)
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Address    Address[]
+}
+
+model Address {
+  id      String @id @unique @default(uuid())
+  phone   String @unique
+  address1 String
+  address2 String ?
+  city    String 
+  state   String
+  pincode String
+  address_type AddressType @default(home)
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+}
+
+model ProductCategory {
+  id            String @default(uuid()) @unique @id
+  categoryName  String @unique
+}
+
+enum Role {
+  user
+  admin
+}
+enum AddressType {
+  home
+  work
+  other
 }

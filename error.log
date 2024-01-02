@@ -1,0 +1,19 @@
+{"data":null,"errors":[],"level":"error","message":"no user found","statusCode":404,"success":false,"timestamp":"2024-01-01T17:46:28.631Z"}
+{"data":null,"errors":[],"level":"error","message":"no user found","statusCode":404,"success":false,"timestamp":"2024-01-01T17:50:54.080Z"}
+{"data":null,"errors":[],"level":"error","message":"no user found","statusCode":404,"success":false,"timestamp":"2024-01-01T17:51:16.733Z"}
+{"data":null,"errors":[],"level":"error","message":"no user found","statusCode":404,"success":false,"timestamp":"2024-01-01T17:52:00.153Z"}
+{"data":null,"errors":[],"level":"error","message":"no user found","statusCode":404,"success":false,"timestamp":"2024-01-01T17:52:57.444Z"}
+{"data":null,"errors":[],"level":"error","message":"no user found","statusCode":404,"success":false,"timestamp":"2024-01-01T17:53:26.345Z"}
+{"data":null,"errors":[],"level":"error","message":"no user found","statusCode":404,"success":false,"timestamp":"2024-01-01T18:00:14.334Z"}
+{"data":null,"errors":[],"level":"error","message":"\nInvalid `prisma.user.findUnique()` invocation:\n\n\nThe table `public.Profile` does not exist in the current database.","statusCode":500,"success":false,"timestamp":"2024-01-02T13:23:44.891Z"}
+{"data":null,"errors":[],"level":"error","message":"\nInvalid `prisma.user.findUnique()` invocation:\n\n\nThe table `public.Profile` does not exist in the current database.","statusCode":500,"success":false,"timestamp":"2024-01-02T13:23:50.417Z"}
+{"data":null,"errors":[],"level":"error","message":"Cannot read properties of undefined (reading 'create')","statusCode":500,"success":false,"timestamp":"2024-01-02T13:24:29.414Z"}
+{"data":null,"errors":[],"level":"error","message":"\nInvalid `prisma.address.create()` invocation:\n\n\nUnique constraint failed on the fields: (`user_id`)","statusCode":500,"success":false,"timestamp":"2024-01-02T13:26:26.783Z"}
+{"data":null,"errors":[],"level":"error","message":"\nInvalid `prisma.address.create()` invocation:\n\n\nUnique constraint failed on the fields: (`user_id`)","statusCode":500,"success":false,"timestamp":"2024-01-02T13:26:56.980Z"}
+{"data":null,"errors":[],"level":"error","message":"\nInvalid `prisma.address.create()` invocation:\n\n\nUnique constraint failed on the fields: (`phone`)","statusCode":500,"success":false,"timestamp":"2024-01-02T13:28:30.225Z"}
+{"data":null,"errors":[],"level":"error","message":"no address addedd","statusCode":400,"success":false,"timestamp":"2024-01-02T14:03:07.590Z"}
+{"data":null,"errors":[],"level":"error","message":"Api not found","statusCode":404,"success":false,"timestamp":"2024-01-02T14:04:39.625Z"}
+{"data":null,"errors":[],"level":"error","message":"no address addedd","statusCode":400,"success":false,"timestamp":"2024-01-02T14:09:33.707Z"}
+{"data":null,"errors":[],"level":"error","message":"no address addedd","statusCode":400,"success":false,"timestamp":"2024-01-02T14:09:40.384Z"}
+{"data":null,"errors":[],"level":"error","message":"no address addedd","statusCode":400,"success":false,"timestamp":"2024-01-02T14:09:52.551Z"}
+{"data":null,"errors":[],"level":"error","message":"Api not found","statusCode":404,"success":false,"timestamp":"2024-01-02T14:10:04.098Z"}
