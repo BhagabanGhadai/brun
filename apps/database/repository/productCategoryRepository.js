@@ -3,7 +3,7 @@ import prisma from '../db.conntection.js';
 export const createCategory = async (categoryName) => {
     return await prisma.ProductCategory.create({
         data: {
-            categoryName: categoryName
+            category_name: categoryName
         }
     });
 };
@@ -16,6 +16,9 @@ export const fetchCategory = async (categoryId) => {
     return await prisma.ProductCategory.findUnique({
         where: {
             id: categoryId
+        },
+        include:{
+            subcategory:true  
         }
     });
 };
@@ -26,7 +29,7 @@ export const updateCategory = async (categoryId, categoryName) => {
             id: categoryId
         },
         data: {
-            categoryName: categoryName
+            category_name: categoryName
         }
     });
 };

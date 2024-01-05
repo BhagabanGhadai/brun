@@ -19,7 +19,7 @@ export const start = (app) => {
         windowMs: 5 * 60 * 1000,
         limit: 50,
         standardHeaders: 'draft-7',
-        legacyHeaders: false,
+        legacyHeaders: false
     })
     app.use(limiter)
     app.use(globalRouter);

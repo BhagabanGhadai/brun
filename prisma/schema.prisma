@@ -12,40 +12,81 @@ datasource db {
 }
 
 model User {
-  id         String   @id @unique @default(uuid())
+  id         String    @id @unique @default(uuid())
   first_name String
   last_name  String
-  email      String   @unique
+  email      String    @unique
   password   String
-  role       Role     @default(user)
-  is_active  Boolean  @default(true)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  role       Role      @default(user)
+  is_active  Boolean   @default(true)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
   Address    Address[]
 }
 
 model Address {
-  id      String @id @unique @default(uuid())
-  phone   String @unique
-  address1 String
-  address2 String ?
-  city    String 
-  state   String
-  pincode String
+  id           String      @id @unique @default(uuid())
+  phone        String      @unique
+  address1     String
+  address2     String?
+  city         String
+  state        String
+  pincode      String
   address_type AddressType @default(home)
-  user    User   @relation(fields: [user_id], references: [id])
-  user_id String
+  user         User        @relation(fields: [user_id], references: [id])
+  user_id      String
 }
 
 model ProductCategory {
-  id            String @default(uuid()) @unique @id
-  categoryName  String @unique
+  id            String               @id @unique @default(uuid())
+  category_name String               @unique
+  product       Product[]
+  subcategory   ProductSubCategory[]
+}
+
+model ProductSubCategory {
+  id               String          @id @unique @default(uuid())
+  subcategory_name String          @unique
+  category         ProductCategory @relation(fields: [category_id], references: [id])
+  category_id      String
+  product          Product[]
+}
+
+model Product {
+  id             String             @id @unique @default(uuid())
+  name           String
+  slug           String             @unique
+  stock          Int
+  price          Float
+  colours        Json[]
+  sizes          Json[]
+  image          Image[]
+  description    String
+  is_published   Boolean            @default(false)
+  out_of_stock   Boolean            @default(false)
+  is_featured    Boolean            @default(false)
+  category       ProductCategory    @relation(fields: [category_id], references: [id])
+  category_id    String
+  subcategory    ProductSubCategory @relation(fields: [subcategory_id], references: [id])
+  subcategory_id String
+  created_at     DateTime           @default(now())
+  updated_at     DateTime           @updatedAt
+}
+
+model Image {
+  id         String   @id @unique @default(uuid())
+  image_id   String
+  is_banner  Boolean  @default(false)
+  product    Product  @relation(fields: [product_id], references: [id])
+  product_id String
+  created_at DateTime @default(now())
 }
 
 enum Role {
   user
   admin
 }
+
 enum AddressType {
   home
   work
