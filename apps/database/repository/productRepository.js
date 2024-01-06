@@ -33,7 +33,17 @@ export const fetchProductBySlug = async (slug) => {
         include:{
             image:true,
             category:true,
-            subcategory:true
+            subcategory:true,
+            review:{
+                include:{
+                    user:{
+                        select:{
+                            first_name:true,
+                            last_name:true
+                        }
+                    }
+                }
+            }
         }
     })
 }

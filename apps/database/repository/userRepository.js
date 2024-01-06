@@ -24,7 +24,12 @@ export const fetchUserById = async (userId) => {
             id: userId
         },
         include:{
-            Address:true
+            Address:true,
+            wishlist:{
+                include:{
+                    product:true
+                }
+            }
         }
     });
 };

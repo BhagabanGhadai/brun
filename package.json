@@ -1,7 +1,7 @@
 {
-  "name": "burn",
+  "name": "brun",
   "version": "1.0.0",
-  "description": "Burn is a online street fashion brand",
+  "description": "Brun is a online street fashion brand",
   "main": "index.js",
   "type": "module",
   "scripts": {

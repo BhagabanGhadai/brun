@@ -9,15 +9,17 @@ const envVarsSchema = Joi.object().keys({
     DATABASE_URL: Joi.string().required().description('DB url'),
     REFRESH_TOKEN_SECRET: Joi.string().required().description('JWT refresh secret key'),
     ACCESS_TOKEN_SECRET: Joi.string().required().description('JWT access secret key'),
+    PASSWORD_RESET_SECRET: Joi.string().default('10day').description('password reset screct key'),
     ACCESS_TOKEN_TTL: Joi.string().default('1day').description('minutes after which access tokens expire'),
     REFRESH_TOKEN_TTL: Joi.string().default('10day').description('days after which refresh tokens expire'),
     NODE_MAILER_EMAIL: Joi.string().required().description('username for node mailer server'),
     NODE_MAILER_PASSWORD: Joi.string().required().description('password for node mailer server'),
     SALT_ROUND:Joi.number().default(10).description('password hassing level'),
-    OTP_EXPIRATION_TTL: Joi.number().default(2).description('minutes after which OTP expires'),
+    RESET_TOKEN_TTL: Joi.string().default("2m").description('minutes after Reset Token Expires'),
     cloudinary_cloud_name: Joi.string().required().description('cloudinary cloud name'),
     cloudinary_api_key: Joi.string().required().description('cloudinary cloud api key'),
-    cloudinary_api_secret: Joi.string().required().description('cloudinary cloud key secret')
+    cloudinary_api_secret: Joi.string().required().description('cloudinary cloud key secret'),
+    FRONTEND_BASEURL:Joi.string().required().description('Frontend url To redirect to frontend')
 })
   .unknown();
 
@@ -32,16 +34,18 @@ const config = {
     PORT: envVars.PORT,
     ACCESS_TOKEN_SECRET: envVars.ACCESS_TOKEN_SECRET,
     REFRESH_TOKEN_SECRET: envVars.REFRESH_TOKEN_SECRET,
+    PASSWORD_RESET_SECRET:envVars.PASSWORD_RESET_SECRET,
     ACCESS_TOKEN_TTL: envVars.ACCESS_TOKEN_TTL,
     REFRESH_TOKEN_TTL: envVars.REFRESH_TOKEN_TTL,
-    OTP_EXPIRATION_TTL:envVars.OTP_EXPIRATION_TTL,
+    RESET_TOKEN_TTL:envVars.RESET_TOKEN_TTL,
     NODE_ENV: envVars.NODE_ENV,
     NODE_MAILER_EMAIL: envVars.NODE_MAILER_EMAIL,
     NODE_MAILER_PASSWORD: envVars.NODE_MAILER_PASSWORD,
     cloudinary_cloud_name: envVars.cloudinary_cloud_name,
     cloudinary_api_key: envVars.cloudinary_api_key,
     cloudinary_api_secret: envVars.cloudinary_api_secret,
-    SALT_ROUND: envVars.SALT_ROUND
+    SALT_ROUND: envVars.SALT_ROUND,
+    FRONTEND_BASEURL:envVars.FRONTEND_BASEURL
 }
 
 export default config

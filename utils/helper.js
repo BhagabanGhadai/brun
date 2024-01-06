@@ -13,9 +13,9 @@ export const validateThePassword= async (enteredPassword,savedPassword) => {
 export const generateAccessToken = function (user) {
     return jwt.sign(
         {
-            user_id: user._id,
-            email: user.email,
+            unique_id: user.id,
             role: user.role,
+            is_active:user.is_active,
             iat: Date.now() / 1000
         },
         env.ACCESS_TOKEN_SECRET,
@@ -26,7 +26,7 @@ export const generateAccessToken = function (user) {
 export const generateRefreshToken = function (user) {
     return jwt.sign(
         {
-            user_id: user._id,
+            user_id: user.id,
         },
         env.REFRESH_TOKEN_SECRET,
         { expiresIn: env.REFRESH_TOKEN_TTL }
@@ -40,3 +40,19 @@ export const generateAccessAndRefreshTokens = async (user) => {
         return { accessToken, refreshToken };
     
 };
+
+export const generatePasswordResetToken = (email) => {
+    return jwt.sign({email: email},env.PASSWORD_RESET_SECRET,{expiresIn:env.RESET_TOKEN_TTL});
+}
+
+export const decodeAccessToken = (accessToken) => {
+    return jwt.verify(accessToken, env.ACCESS_TOKEN_SECRET);
+}
+
+export const decodeRefreshToken = (refreshToken) => {
+    return jwt.verify(refreshToken, env.REFRESH_TOKEN_SECRET);
+}
+
+export const decodeResetToken = (resetToken) => {
+    return jwt.verify(resetToken,env.PASSWORD_RESET_SECRET)
+}
