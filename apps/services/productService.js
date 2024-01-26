@@ -70,9 +70,9 @@ export const getAllProductInStock = catchAsync(async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
 
-    const offset = (page - 1) * pageSize;
-    filter.offset = offset;
-    filter.limit = pageSize;
+    const skip = (page - 1) * pageSize;
+    filter.skip = skip;
+    filter.take = pageSize;
     let allFilteredProduct = await fetchAllProduct(filter)
     return res.status(200).send(new ApiResponse(200, allFilteredProduct, 'product fetched successfully'))
 })
