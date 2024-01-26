@@ -1,20 +1,20 @@
 import prisma from '../db.conntection.js';
 
 export const createProduct = async (productData) => {
-    return await prisma.product.create({
+    return await prisma.Product.create({
         data: productData
     })
 }
 
 export const createMultipleProduct = async (products) => {
-    return await prisma.product.createMany({
+    return await prisma.Product.createMany({
         data: products,
         skipDuplicates: true
     })
 }
 
 export const fetchAllProduct = async (filter) => {
-    return await prisma.product.findMany(filter)
+    return await prisma.Product.findMany(filter)
 }
 
 export const fetchProductByProductId = async (ProductId) => {
