@@ -48,11 +48,31 @@ export const stockProductDetails = catchAsync(async (req, res) => {
 })
 
 export const getAllProductInStock = catchAsync(async (req, res) => {
-    let filter = {}
+    let filter = {
+        include: {
+            image: true
+        }
+    }
     if (req.query.sort) {
         req.query.sort == "asc" ? req.query.sort = "asc" : req.query.sort = "desc"
         filter.orderBy = { created_at: req.query.sort }
     }
+    if(req.query.category){
+        filter.where={
+            category_id:req.query.category
+        }
+    }
+    if(req.query.subcategory){
+        filter.where={
+            subcategory_id:req.query.subcategory
+        }
+    }
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+
+    const offset = (page - 1) * pageSize;
+    filter.offset = offset;
+    filter.limit = pageSize;
     let allFilteredProduct = await fetchAllProduct(filter)
     return res.status(200).send(new ApiResponse(200, allFilteredProduct, 'product fetched successfully'))
 })
@@ -114,7 +134,6 @@ export const makeProductImageBannerImage = catchAsync(async (req, res) => {
 
 export const removeProductImage = catchAsync(async (req, res) => {
     const imageExist = await fetchImageById(req.params.id)
-    console.log(imageExist)
     if (!imageExist) {
         throw new ApiError(404, 'no image found')
     }
