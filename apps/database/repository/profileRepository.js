@@ -37,3 +37,10 @@ export const deleteAddress = async (profileId) => {
         }
     });
 };
+export const deleteMultipleAddressOfUser = async (userId) => {
+    return await prisma.address.deleteMany({
+        where: {
+            user_id: userId
+        }
+    });
+};

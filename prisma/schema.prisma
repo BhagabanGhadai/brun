@@ -25,6 +25,7 @@ model User {
   reviews    Reviews[]
   wishlist   Wishlist[]
   cart       Cart[]
+  orders     Order[]
 }
 
 model Address {
@@ -38,6 +39,7 @@ model Address {
   address_type AddressType @default(home)
   user         User        @relation(fields: [user_id], references: [id])
   user_id      String
+  orders       Order[]
 }
 
 model ProductCategory {
@@ -61,6 +63,7 @@ model Product {
   slug           String             @unique
   stock          Int
   price          Float
+  discount       Float
   colours        Json[]
   sizes          Json[]
   image          Image[]
@@ -112,11 +115,30 @@ model Cart {
   id         String   @id @unique @default(uuid())
   user_id    String
   user       User     @relation(fields: [user_id], references: [id])
-  produt_id  String
-  product    Product  @relation(fields: [produt_id], references: [id])
+  product_id String
+  product    Product  @relation(fields: [product_id], references: [id])
   quantity   Int
   price      Float
+  discount   Float
+  colour     String
+  size       String
   created_at DateTime @default(now())
+}
+
+model Order {
+  id                  String        @id @unique() @default(uuid())
+  user_id             String
+  user                User          @relation(fields: [user_id], references: [id])
+  address_id          String
+  address             Address       @relation(fields: [address_id], references: [id])
+  razorpay_order_id   String
+  razorpay_payment_id String
+  razorpay_signature  String
+  payment_time        DateTime
+  products            Json[]
+  status              PaymentStatus @default(pending)
+  order_status        OrderStatus   @default(Initiated)
+  created_at          DateTime      @default(now())
 }
 
 enum Role {
@@ -128,4 +150,19 @@ enum AddressType {
   home
   work
   other
+}
+
+enum PaymentStatus {
+  pending
+  success
+  failed
+}
+
+enum OrderStatus {
+  Initiated
+  Accepted
+  Shipped
+  Deliverd
+  Cancelled
+  Returned
 }

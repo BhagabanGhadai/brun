@@ -114,3 +114,11 @@ export const deleteProductImage = async (imageId) => {
         }
     })
 }
+
+export const deleteMultipleProductImage = async (productId) => {
+    return await prisma.image.deleteMany({
+        where: {
+            product_id:productId
+        }
+    })
+}

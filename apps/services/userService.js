@@ -5,6 +5,10 @@ import { sendEmailOnSignUp,sendEmailOnForgotPassword } from "../../utils/nodeMai
 import env from "../../env.js"
 import { generateEncryptedPassword, validateThePassword, generateAccessAndRefreshTokens,decodeRefreshToken,generatePasswordResetToken,decodeResetToken } from '../../utils/helper.js';
 import { createUser, fetchUserByEmail, fetchUserById,deleteUserById,updateUserById,getAllUser } from '../database/repository/userRepository.js';
+import { fetchCartOfAuser,deleteCartOfAuser } from '../database/repository/cartRepository.js';
+import { getAllWishlistOfAuser,deleteMultipleWishlistOfUser } from '../database/repository/wishlistRepository.js';
+import { getAllReviewsOfAuser,deleteMultipleReviewOfUser } from '../database/repository/reviewRepository.js';
+import { fetchAllAddressFromUserId,deleteMultipleAddressOfUser } from '../database/repository/profileRepository.js';
 
 export const registerUser = catchAsync(async (req, res) => {
     let { first_name, last_name, email, password, role } = req.body
@@ -60,6 +64,24 @@ export const deleteUserProfile = catchAsync(async (req, res)=>{
     let userDetails=await fetchUserById(req.params.id)
     if(!userDetails){
         throw new ApiError(404,'no user found')
+    }
+    let [reviewOfuser,wishlistOfuser,addressOfUser,cartOfUser]=await Promise.all([
+        getAllReviewsOfAuser(userDetails.id),
+        getAllWishlistOfAuser(userDetails.id),
+        fetchAllAddressFromUserId(userDetails.id),
+        fetchCartOfAuser(userDetails.id)
+    ])
+    if(reviewOfuser.length){
+        await deleteMultipleReviewOfUser(userDetails.id)
+    }
+    if(wishlistOfuser.length){
+        await deleteMultipleWishlistOfUser(userDetails.id)
+    }
+    if(addressOfUser.length){
+        await deleteMultipleAddressOfUser(userDetails.id)
+    }
+    if(cartOfUser.length){
+        await deleteCartOfAuser(userDetails.id)
     }
     let deleteUser=await deleteUserById(req.params.id)
     return res.status(204).send(204,deleteUser,'user deleted')

@@ -4,9 +4,10 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 import { catchAsync } from '../../utils/catchAsync.js';
 import { UPLOAD_MULTIPLE_IMAGE, DELETE_IMAGE } from '../../utils/cloudinary.js'
 import { fetchCategory } from '../database/repository/productCategoryRepository.js';
-import {createProduct, createMultipleProduct, fetchProductBySlug, fetchProductByProductId, updateProductBySlug, deleteProductBySlug,
-fetchAllProduct, addProductImage, fetchAllImageOfaProduct, deleteProductImage, fetchImageById, bannerImageCheck,makeImageBannerImage} from '../database/repository/productRepository.js'
-
+import {createProduct, createMultipleProduct, fetchProductBySlug, fetchProductByProductId, updateProductBySlug, deleteProductBySlug,deleteMultipleProductImage,fetchAllProduct, addProductImage, fetchAllImageOfaProduct, deleteProductImage, fetchImageById, bannerImageCheck,makeImageBannerImage} from '../database/repository/productRepository.js'
+import { deleteMultipleReviewOfproduct } from '../database/repository/reviewRepository.js'
+import { getAllWishListOfAProduct,removeAllproductFromWishList } from '../database/repository/wishlistRepository.js';
+import { fetchAllCartFromProductId,removeProductsFromMultipleCart } from '../database/repository/cartRepository.js';
 
 export const addProductToStock = catchAsync(async (req, res) => {
     let categoryCheck = await fetchCategory(req.body.category_id)
@@ -18,6 +19,7 @@ export const addProductToStock = catchAsync(async (req, res) => {
     if (slugCheck) {
         throw new ApiError(400, 'slug already in use')
     }
+    console.log(req.body)
     let productListing = await createProduct(req.body)
     return res.status(201).send(201, productListing, 'product added successfully')
 })
@@ -50,22 +52,62 @@ export const stockProductDetails = catchAsync(async (req, res) => {
 export const getAllProductInStock = catchAsync(async (req, res) => {
     let filter = {
         include: {
-            image: true
+            image: true,
+            category:true,
+            subcategory:true
         }
     }
     if (req.query.sort) {
         req.query.sort == "asc" ? req.query.sort = "asc" : req.query.sort = "desc"
         filter.orderBy = { created_at: req.query.sort }
     }
+    if(req.query.publish){
+        req.query.publish == "true" ? req.query.publish = true : req.query.publish = false
+        filter.where={
+            ...filter.where,
+            is_published:req.query.publish
+        }
+    }
     if(req.query.category){
         filter.where={
+            ...filter.where,
             category_id:req.query.category
         }
     }
     if(req.query.subcategory){
         filter.where={
+            ...filter.where,
             subcategory_id:req.query.subcategory
         }
+    }
+    if (req.query.search) {
+        filter.where = {
+            ...filter.where,
+            OR:[
+                {
+                    name: {
+                        contains: req.query.search,
+                        mode: 'insensitive'
+                    } 
+                },
+                {
+                    category:{
+                        category_name :{
+                            contains: req.query.search,
+                            mode: 'insensitive'
+                        }
+                    }
+                },
+                {
+                    subcategory:{
+                        subcategory_name :{
+                            contains: req.query.search,
+                            mode: 'insensitive'
+                        }
+                    }
+                }  
+            ]
+        };
     }
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
@@ -91,6 +133,27 @@ export const removeProductToStock = catchAsync(async (req, res) => {
     if (!productExists) {
         throw new ApiError(404, 'product not found')
     }
+    if(productExists.image&&productExists.image.length>0){
+        let removeImage = await deleteMultipleProductImage(productExists.id)
+        if(removeImage.count){
+            productExists.image.forEach(async(img) => {
+                    if (img?.image_id) {
+                        await DELETE_IMAGE(img?.image_id)
+                    }
+            });
+        }
+    }
+    if(productExists.review&&productExists.review.length){
+        await deleteMultipleReviewOfproduct(productExists.id)
+    }
+    let wishlist=await getAllWishListOfAProduct(productExists.id)
+    if(wishlist.length){
+        await removeAllproductFromWishList(productExists.id)
+    }
+    let cartList=await fetchAllCartFromProductId(productExists.id)
+    if(cartList.length){
+        await removeProductsFromMultipleCart(productExists.id)
+    }
     let deleteProduct = await deleteProductBySlug(req.params.slug)
     return res.status(204).send(new ApiResponse(204, deleteProduct, 'Product Deleted Successful'))
 })
@@ -103,8 +166,11 @@ export const addProductImages = catchAsync(async (req, res) => {
     if (!productExists) {
         throw new ApiError(404, 'no product found')
     }
-    let uploadImage = await UPLOAD_MULTIPLE_IMAGE(req.files.product_image)
-    let addImage = await Promise.all(uploadImage.map(async (image) => {
+    let uploadImages = await UPLOAD_MULTIPLE_IMAGE(req.files.product_image)
+    if(!uploadImages?.length){
+        throw new ApiError(400,'error while uploading image')
+    }
+    let addImage = await Promise.all(uploadImages.map(async (image) => {
         return await addProductImage({ product_id: req.body.product_id, image_id: image.public_id })
     }))
     return res.status(200).send(new ApiResponse(200, addImage, 'product image added'))
