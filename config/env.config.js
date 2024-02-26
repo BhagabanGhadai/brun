@@ -19,7 +19,12 @@ const envVarsSchema = Joi.object().keys({
     cloudinary_cloud_name: Joi.string().required().description('cloudinary cloud name'),
     cloudinary_api_key: Joi.string().required().description('cloudinary cloud api key'),
     cloudinary_api_secret: Joi.string().required().description('cloudinary cloud key secret'),
-    FRONTEND_BASEURL:Joi.string().required().description('Frontend url To redirect to frontend')
+    FRONTEND_BASEURL:Joi.string().required().description('Frontend url To redirect to frontend'),
+    RAZORPAY_API_KEY:Joi.string().required().description('razorpay api key'),
+    RAZORPAY_KEY_SECRET:Joi.string().required().description('razorpay key secret'),
+    imagekit_publicKey:Joi.string().required().description('image kit public key'),
+    imagekit_privateKey:Joi.string().required().description('image kit private key'),
+    imagekit_urlEndpoint:Joi.string().required().description('image url end point'),
 })
   .unknown();
 
@@ -45,7 +50,12 @@ const config = {
     cloudinary_api_key: envVars.cloudinary_api_key,
     cloudinary_api_secret: envVars.cloudinary_api_secret,
     SALT_ROUND: envVars.SALT_ROUND,
-    FRONTEND_BASEURL:envVars.FRONTEND_BASEURL
+    FRONTEND_BASEURL:envVars.FRONTEND_BASEURL,
+    RAZORPAY_API_KEY:envVars.RAZORPAY_API_KEY,
+    RAZORPAY_KEY_SECRET:envVars.RAZORPAY_KEY_SECRET,
+    imagekit_publicKey:envVars.imagekit_publicKey,
+    imagekit_privateKey:envVars.imagekit_privateKey,
+    imagekit_urlEndpoint:envVars.imagekit_urlEndpoint
 }
 
 export default config

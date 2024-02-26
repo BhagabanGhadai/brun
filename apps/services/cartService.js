@@ -28,6 +28,7 @@ export const addProductInTocart = catchAsync(async (req, res) => {
     if (!productExist) {
         throw new ApiError(404, 'product Not Found')
     }
+    let cart=null
     if (productExistsInCart) {
         let updateCart = {
             product_id: req.body.product_id,
@@ -38,9 +39,9 @@ export const addProductInTocart = catchAsync(async (req, res) => {
             colour:req.body.colour,
             size:req.body.size
         }
-        await updateCartData(productExistsInCart.id, updateCart)
+        cart=await updateCartData(productExistsInCart.id, updateCart)
     } else {
-        await addTocart({
+        cart=await addTocart({
             product_id: req.body.product_id,
             user_id: userExist.id,
             quantity: req.body.quantity,
@@ -50,7 +51,7 @@ export const addProductInTocart = catchAsync(async (req, res) => {
             size:req.body.size
         })
     }
-    return res.status(200).send(new ApiResponse(200, null, 'product added to the cart'))
+    return res.status(201).send(new ApiResponse(201, cart, 'product added to the cart'))
 })
 
 export const removeProductFromCart = catchAsync(async (req, res) => {
@@ -62,10 +63,10 @@ export const removeProductFromCart = catchAsync(async (req, res) => {
         throw new ApiError(404, 'User Not Found')
     }
     if (!productExistInCart) {
-        throw new ApiError(404, 'cart Not Found')
+        throw new ApiError(404, 'product remove from the cart')
     }
     await deleteProductFromCart(req.params.cart_id)
-    return res.status(204).send(new ApiResponse(204, null, 'product remove from the cart'))
+    return res.status(200).send(new ApiResponse(200, null, 'product remove from the cart'))
 })
 
 export const getProductInsideCart = catchAsync(async(req,res)=>{
@@ -96,7 +97,7 @@ export const incrementProductQuantity = catchAsync(async(req,res)=>{
         throw new ApiError(404, 'User Not Found')
     }
     if (!productExistInCart) {
-        throw new ApiError(404, 'cart Not Found')
+        throw new ApiError(404, 'product remove from the cart')
     }
     let updatePrice=(productExistInCart.price/productExistInCart.quantity)*(productExistInCart.quantity+1)
     let updateQuantity=await incrementTheProductQuantity(req.params.cart_id,updatePrice)
@@ -113,7 +114,7 @@ export const decrementProductQuantity = catchAsync(async(req,res)=>{
         throw new ApiError(404, 'User Not Found')
     }
     if (!productExistInCart) {
-        throw new ApiError(404, 'cart Not Found')
+        throw new ApiError(404, 'product remove from the cart')
     }
     if(productExistInCart.quantity>1){
         let updatePrice=(productExistInCart.price/productExistInCart.quantity)*(productExistInCart.quantity-1)
@@ -121,5 +122,5 @@ export const decrementProductQuantity = catchAsync(async(req,res)=>{
         return res.status(200).send(new ApiResponse(200, updateQuantity, 'product quantity increased successfully'))
     }
     await deleteProductFromCart(req.params.cart_id)
-    return res.status(204).send(new ApiResponse(204, null, 'product remove from the cart'))
+    return res.status(200).send(new ApiResponse(200, null, 'product remove from the cart'))
 })

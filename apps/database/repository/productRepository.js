@@ -65,6 +65,19 @@ export const deleteProductBySlug = async (slug) => {
     })
 }
 
+export const updateTheProductStock = async(productId,quantity)=>{
+    return await prisma.Product.update({
+        where:{
+            id:productId
+        },
+        data:{
+            stock:{
+                increment:-quantity
+            }
+        }
+    })
+}
+
 export const addProductImage = async (productData) => {
     return await prisma.image.create({
         data: productData
@@ -82,7 +95,7 @@ export const fetchImageById = async (imageId) => {
 export const fetchAllImageOfaProduct = async (productId) => {
     return await prisma.image.findMany({
         where: {
-            id: productId
+            product_id: productId
         }
     })
 }

@@ -85,6 +85,7 @@ model Product {
 model Image {
   id         String   @id @unique @default(uuid())
   image_id   String
+  image_url  String
   is_banner  Boolean  @default(false)
   product    Product  @relation(fields: [product_id], references: [id])
   product_id String
@@ -131,14 +132,33 @@ model Order {
   user                User          @relation(fields: [user_id], references: [id])
   address_id          String
   address             Address       @relation(fields: [address_id], references: [id])
-  razorpay_order_id   String
-  razorpay_payment_id String
-  razorpay_signature  String
-  payment_time        DateTime
+  razorpay_order_id   String        
+  razorpay_payment_id String?
+  razorpay_signature  String?
+  payment_time        DateTime?
   products            Json[]
+  amount              Float
+  coupon_id           String?
+  coupon              Coupon?       @relation(fields: [coupon_id], references: [id])
+  invoice_no          String
   status              PaymentStatus @default(pending)
   order_status        OrderStatus   @default(Initiated)
   created_at          DateTime      @default(now())
+}
+
+model Coupon {
+  id                  String   @id @unique @default(uuid())
+  coupon_code         String   
+  description         String
+  discount            Float
+  max_discount_amount Float?
+  total_coupons       Int
+  used_coupons        Int      @default(0)
+  coupon_per_user     Int
+  validity            DateTime
+  order               Order[]
+  is_published        Boolean  @default(false)
+  is_expired          Boolean  @default(false)
 }
 
 enum Role {

@@ -2,19 +2,21 @@ import slugify from "slugify";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { catchAsync } from '../../utils/catchAsync.js';
-import { UPLOAD_MULTIPLE_IMAGE, DELETE_IMAGE } from '../../utils/cloudinary.js'
+import { singleUpload,multiUpload,deleteImage } from '../../utils/assest.js'
 import { fetchCategory } from '../database/repository/productCategoryRepository.js';
 import {createProduct, createMultipleProduct, fetchProductBySlug, fetchProductByProductId, updateProductBySlug, deleteProductBySlug,deleteMultipleProductImage,fetchAllProduct, addProductImage, fetchAllImageOfaProduct, deleteProductImage, fetchImageById, bannerImageCheck,makeImageBannerImage} from '../database/repository/productRepository.js'
 import { deleteMultipleReviewOfproduct } from '../database/repository/reviewRepository.js'
 import { getAllWishListOfAProduct,removeAllproductFromWishList } from '../database/repository/wishlistRepository.js';
 import { fetchAllCartFromProductId,removeProductsFromMultipleCart } from '../database/repository/cartRepository.js';
 
+
 export const addProductToStock = catchAsync(async (req, res) => {
     let categoryCheck = await fetchCategory(req.body.category_id)
     if (!categoryCheck) {
         throw new ApiError(404, 'category not found')
     }
-    req.body.slug = slugify(req.body.name)
+    let lowerCaseName=req.body.name.toLowerCase()
+    req.body.slug = slugify(lowerCaseName)
     let slugCheck = await fetchProductBySlug((req.body.slug))
     if (slugCheck) {
         throw new ApiError(400, 'slug already in use')
@@ -29,7 +31,8 @@ export const addBulkProductToStock = catchAsync(async (req, res) => {
         throw new ApiError(400, 'invalid request body')
     }
     let newProduct = await Promise.all(products.map(async (product) => {
-        product.slug = slugify(product.name)
+        let lowerCaseName=product.name.toLowerCase()
+        product.slug = slugify(lowerCaseName)
         let slugCheck = await fetchProductBySlug((product.slug))
         if (slugCheck) {
             throw new ApiError(400, 'slug already in use')
@@ -165,12 +168,12 @@ export const addProductImages = catchAsync(async (req, res) => {
     if (!productExists) {
         throw new ApiError(404, 'no product found')
     }
-    let uploadImages = await UPLOAD_MULTIPLE_IMAGE(req.files.product_image)
-    if(!uploadImages?.length){
+    let uploadImages = await multiUpload(req.files.product_image)
+    if(!uploadImages.length){
         throw new ApiError(400,'error while uploading image')
     }
     let addImage = await Promise.all(uploadImages.map(async (image) => {
-        return await addProductImage({ product_id: req.body.product_id, image_id: image.public_id })
+        return await addProductImage({ product_id: req.body.product_id, image_id: image.fileId,image_url:image.url })
     }))
     return res.status(200).send(new ApiResponse(200, addImage, 'product image added'))
 
@@ -205,7 +208,7 @@ export const removeProductImage = catchAsync(async (req, res) => {
     let removeImage = await deleteProductImage(req.params.id)
     if (removeImage) {
         if (removeImage?.image_id) {
-            await DELETE_IMAGE(removeImage?.image_id)
+            await deleteImage(removeImage.image_id)
         }
     }
     return res.status(204).send(new ApiResponse(204, removeImage, 'image successfully removed'))

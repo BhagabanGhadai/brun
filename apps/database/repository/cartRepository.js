@@ -71,7 +71,7 @@ export const decrementTheProductQuantity = async(cartId,price)=>{
         },
         data:{
             quantity:{
-                increment:-1
+                decrement:1
             },
             price:price
         }
@@ -93,6 +93,7 @@ export const removeProductsFromMultipleCart=async(productId)=>{
         }
     })
 }
+
 export const deleteCartOfAuser=async(userId)=>{
     return await prisma.Cart.deleteMany({
         where:{

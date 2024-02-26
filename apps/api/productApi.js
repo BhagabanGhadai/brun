@@ -5,17 +5,17 @@ import { addProductToStock, getAllProductInStock, addBulkProductToStock,updatePr
 import { pinAndUnpinProdctFromWishlist } from '../services/wishlistService.js'
 import { verifyJWT,verifyPermission} from '../../middlewares/auth.mw.js'
 
-productRouter.route('/').post(addProductToStock)
-productRouter.route('/bulk-add').post(addBulkProductToStock)
+productRouter.route('/').post( verifyJWT,verifyPermission,addProductToStock)
+productRouter.route('/bulk-add').post(verifyJWT,verifyPermission,addBulkProductToStock)
 productRouter.route('/').get(getAllProductInStock)
 productRouter.route('/:slug').get(stockProductDetails)
-productRouter.route('/:slug').patch(updateProductInstock)
-productRouter.route('/:slug').delete(removeProductToStock)
+productRouter.route('/:slug').patch(verifyJWT,verifyPermission,updateProductInstock)
+productRouter.route('/:slug').delete(verifyJWT,verifyPermission,removeProductToStock)
 
-productRouter.route('/image').post(UploadFile.fields([{name:'product_image',maxCount:10}]),addProductImages)
-productRouter.route('/image/:product_id').get(getAllImageOfAProduct)
-productRouter.route('/image/:id').patch(makeProductImageBannerImage)
-productRouter.route('/image/:id').delete(removeProductImage)
+productRouter.route('/image').post(verifyJWT,verifyPermission,UploadFile.fields([{name:'product_image',maxCount:10}]),addProductImages)
+productRouter.route('/image/:product_id').get(verifyJWT,verifyPermission,getAllImageOfAProduct)
+productRouter.route('/image/:id').patch(verifyJWT,verifyPermission,makeProductImageBannerImage)
+productRouter.route('/image/:id').delete(verifyJWT,verifyPermission,removeProductImage)
 
 productRouter.route('/fav').post(verifyJWT,pinAndUnpinProdctFromWishlist)
 export default productRouter
