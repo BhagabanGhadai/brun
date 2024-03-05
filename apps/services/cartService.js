@@ -13,7 +13,19 @@ export const fetchAllProdctOfAUserFromCart = catchAsync(async (req, res) => {
     if (!userExist) {
         throw new ApiError(404, 'User Not Found')
     }
-    return res.status(200).send(new ApiResponse(200, fetchProducts, 'fetched successfully'))
+    let totalAmount = 0;
+    fetchProducts.forEach(product => {
+        let totalPrice = (product.price * product.quantity);
+        totalAmount += totalPrice - ((totalPrice / 100) * product.discount)
+    });
+    if (req.params.coupon_id) {
+        let couponDetails = await fetchCouponDetails(req.params.coupon_id)
+        if (!couponDetails) {
+            throw new ApiError(404, 'coupon not found')
+        }
+        totalAmount=Math.round(totalAmount-((totalAmount/100)*couponDetails.discount))
+    }
+    return res.status(200).send(new ApiResponse(200, {fetchProducts,totalAmount}, 'fetched successfully'))
 })
 
 export const addProductInTocart = catchAsync(async (req, res) => {
