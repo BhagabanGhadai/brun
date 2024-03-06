@@ -70,6 +70,55 @@ export const getAllProductInStock = catchAsync(async (req, res) => {
             is_published:req.query.publish
         }
     }
+    if(req.query.stockout){
+        req.query.stockout == "true" ? req.query.stockout = true : req.query.stockout = false
+        filter.where={
+            ...filter.where,
+            out_of_stock:req.query.stockout
+        }
+    }
+    if(req.query.featured){
+        req.query.featured == "true" ? req.query.featured = true : req.query.featured = false
+        filter.where={
+            ...filter.where,
+            is_featured:req.query.featured
+        }
+    }
+    if(req.query.gift){
+        req.query.gift == "true" ? req.query.gift = true : req.query.gift = false
+        filter.where={
+            ...filter.where,
+            is_gift_for_you:req.query.gift
+        }
+    }
+    if(req.query.top_picks){
+        req.query.top_picks == "true" ? req.query.top_picks = true : req.query.top_picks = false
+        filter.where={
+            ...filter.where,
+            is_top_picks:req.query.top_picks
+        }
+    }
+    if(req.query.trending){
+        req.query.trending == "true" ? req.query.trending = true : req.query.trending = false
+        filter.where={
+            ...filter.where,
+            is_trending:req.query.trending
+        }
+    }
+    if(req.query.new_arrivals){
+        req.query.new_arrivals == "true" ? req.query.new_arrivals = true : req.query.new_arrivals = false
+        filter.where={
+            ...filter.where,
+            is_new_arrivals:req.query.new_arrivals
+        }
+    }
+    if(req.query.iconic_essential){
+        req.query.iconic_essential == "true" ? req.query.iconic_essential = true : req.query.iconic_essential = false
+        filter.where={
+            ...filter.where,
+            is_iconic_essential:req.query.iconic_essential
+        }
+    }
     if(req.query.category){
         filter.where={
             ...filter.where,
