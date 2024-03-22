@@ -36,7 +36,7 @@ model Address {
   city         String
   state        String
   pincode      String
-  address_type AddressType @default(home)
+  address_type AddressType @default(shipping)
   user         User        @relation(fields: [user_id], references: [id])
   user_id      String
   orders       Order[]
@@ -172,9 +172,8 @@ enum Role {
 }
 
 enum AddressType {
-  home
-  work
-  other
+  shipping
+  billing
 }
 
 enum PaymentStatus {
