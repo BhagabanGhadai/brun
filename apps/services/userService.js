@@ -41,7 +41,7 @@ export const loginUser= catchAsync( async(req, res)=>{
         throw new ApiError(401,'Incorrect Password!')
     }
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(userExists);
-    return res.status(200).send(new ApiResponse(200,{accessToken,refreshToken},'logged in successful'))
+    return res.status(200).send(new ApiResponse(200,{accessToken,refreshToken,userId:userExists.id},'logged in successful'))
 })
 
 export const getAllUserList = catchAsync(async (req, res)=>{
