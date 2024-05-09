@@ -18,8 +18,8 @@ export const fetchAllProdctOfAUserFromCart = catchAsync(async (req, res) => {
         let totalPrice = (product.price * product.quantity);
         totalAmount += totalPrice - ((totalPrice / 100) * product.discount)
     });
-    if (req.params.coupon_id) {
-        let couponDetails = await fetchCouponDetails(req.params.coupon_id)
+    if (req.query.coupon_id) {
+        let couponDetails = await fetchCouponDetails(req.query.coupon_id)
         if (!couponDetails) {
             throw new ApiError(404, 'coupon not found')
         }
